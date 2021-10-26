@@ -1,6 +1,7 @@
 package com.blend.ibt.springframework.beans.factory.config;
 
 /**
+ * Bean的引用
  * @author tt
  */
 public class BeanReference {

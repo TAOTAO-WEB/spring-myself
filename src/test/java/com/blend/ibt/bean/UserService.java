@@ -1,9 +1,12 @@
 package com.blend.ibt.bean;
 
 public class UserService {
+
     private String username;
     private String uid;
     private UserDao userDao;
+    private String company;
+    private String location;
 
     public UserService(){
 
@@ -18,8 +21,33 @@ public class UserService {
         return "UserService{" +
                 "username='" + username + '\'' +
                 ", uid='" + uid + '\'' +
-                ", userDao=" + userDao +
+                ", company='" + company + '\'' +
+                ", location='" + location + '\'' +
                 '}';
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getUid() {

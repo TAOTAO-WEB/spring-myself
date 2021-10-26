@@ -7,6 +7,12 @@
         <property name="uid" value="10001"/>
         <property name="userDao" ref="userDao"/>
         <property name="username" value="123"/>
+        <property name="company" value="tc"/>
+        <property name="location" value="hz"/>
     </bean>
+
+    <bean class="com.blend.ibt.common.MyBeanFactoryPostProcessor"/>
+
+    <bean class="com.blend.ibt.common.MyBeanPostProcessor"/>
 
 </beans>

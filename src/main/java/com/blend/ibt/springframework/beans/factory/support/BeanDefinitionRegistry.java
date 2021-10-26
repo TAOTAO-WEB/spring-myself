@@ -36,6 +36,7 @@ public interface BeanDefinitionRegistry {
     /**
      * Return the names of all beans defined in this registry
      *
+     * 返回注册表中所有Bean名称
      * @return
      */
     String[] getBeanDefinitionNames();
