@@ -1,6 +1,9 @@
 package com.blend.ibt.bean;
 
-public class UserService {
+import com.blend.ibt.springframework.beans.factory.DisposableBean;
+import com.blend.ibt.springframework.beans.factory.InitializingBean;
+
+public class UserService implements InitializingBean, DisposableBean {
 
     private String username;
     private String uid;
@@ -67,6 +70,16 @@ public class UserService {
     }
 
     public void queryUser(){
-        System.out.println("test user:"+this.username+"，查询用户信息:"+userDao.queryUserName(this.uid));
+        System.out.println("test user:"+userDao.queryUserName(this.uid));
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("执行：userService.destroy");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("执行 userService.afterPropertiesSet");
     }
 }
