@@ -7,6 +7,14 @@ import com.blend.ibt.springframework.beans.PropertyValues;
  */
 public class BeanDefinition {
 
+
+    /**
+     * 对象作用范围 默认single单例 prototype每次创建新的对象
+     */
+    String SCOPE_SINGLETON = ConfigurableBeanFactory.SCOPE_SINGLETON;
+
+    String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
+
     private Class beanClass;
 
     /**
@@ -17,6 +25,12 @@ public class BeanDefinition {
     private String initMethodName;
 
     private String destroyMethodName;
+
+    private String scope = SCOPE_SINGLETON;
+
+    private boolean singleton = true;
+
+    private boolean prototype = false;
 
     public BeanDefinition(Class beanClass, PropertyValues propertyValues) {
         this.beanClass = beanClass;
@@ -59,4 +73,19 @@ public class BeanDefinition {
     public void setDestroyMethodName(String destroyMethodName) {
         this.destroyMethodName = destroyMethodName;
     }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+        this.singleton = SCOPE_SINGLETON.equals(scope);
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
+    }
+
+    public boolean isSingleton(){
+        return singleton;
+    }
+
+    public boolean isPrototype(){
+        return prototype;
+    }
+
 }

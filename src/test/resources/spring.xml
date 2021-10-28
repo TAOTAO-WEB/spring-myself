@@ -15,4 +15,13 @@
 
     <bean class="com.blend.ibt.common.MyBeanPostProcessor"/>
 
+    <bean id="userService2" class="com.blend.ibt.bean.UserService2" scope="prototype">
+        <property name="uId" value="10001"/>
+        <property name="company" value="tc"/>
+        <property name="location" value="bj"/>
+        <property name="userDao" ref="proxyUserDao"/>
+    </bean>
+
+    <bean id="proxyUserDao" class="com.blend.ibt.bean.ProxyBeanFactory"/>
+
 </beans>

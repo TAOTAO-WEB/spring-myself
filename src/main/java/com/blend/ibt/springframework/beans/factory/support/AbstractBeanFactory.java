@@ -1,6 +1,7 @@
 package com.blend.ibt.springframework.beans.factory.support;
 
 import com.blend.ibt.springframework.beans.BeansException;
+import com.blend.ibt.springframework.beans.factory.FactoryBean;
 import com.blend.ibt.springframework.beans.factory.config.BeanDefinition;
 import com.blend.ibt.springframework.beans.factory.config.BeanPostProcessor;
 import com.blend.ibt.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -13,7 +14,7 @@ import java.util.List;
  * BeanDefinition 注册表接口
  * @author tt
  */
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
 
     /**
      *
@@ -41,13 +42,28 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     }
 
     protected <T> T doGetBean(final String name,final Object[] args){
-        Object bean = getSingleton(name);
-        if(bean != null){
-            return (T)bean;
+        Object sharedInstance = getSingleton(name);
+        if(sharedInstance != null){
+            return (T) getObjectForBeanInstance(sharedInstance,name);
         }
         BeanDefinition beanDefinition = getBeanDefinition(name);
-        return (T) createBean(name,beanDefinition,args);
+        Object bean = createBean(name,beanDefinition,args);
+        return (T) getObjectForBeanInstance(bean,name);
 
+    }
+
+    private Object getObjectForBeanInstance(Object beanInstance,String beanName){
+        if(!(beanInstance instanceof FactoryBean)){
+            return beanInstance;
+        }
+
+        Object object = getCachedObjectForFactoryBean(beanName);
+
+        if(object==null){
+            FactoryBean<?> factoryBean = (FactoryBean<?>) beanInstance;
+            object = getObjectFromFactoryBean(factoryBean,beanName);
+        }
+        return object;
     }
 
     protected abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
