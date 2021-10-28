@@ -1,9 +1,15 @@
 package com.blend.ibt.bean;
 
-import com.blend.ibt.springframework.beans.factory.DisposableBean;
-import com.blend.ibt.springframework.beans.factory.InitializingBean;
+import com.blend.ibt.springframework.beans.BeansException;
+import com.blend.ibt.springframework.beans.factory.*;
+import com.blend.ibt.springframework.context.ApplicationContext;
+import com.blend.ibt.springframework.context.ApplicationContextAware;
 
-public class UserService implements InitializingBean, DisposableBean {
+public class UserService implements InitializingBean, DisposableBean,
+        BeanFactoryAware, BeanClassLoaderAware, ApplicationContextAware,BeanNameAware {
+
+    private ApplicationContext applicationContext;
+    private BeanFactory beanFactory;
 
     private String username;
     private String uid;
@@ -81,5 +87,33 @@ public class UserService implements InitializingBean, DisposableBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         System.out.println("执行 userService.afterPropertiesSet");
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        System.out.println("classLoader:"+classLoader);
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("Bean Name is:"+name);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
+    }
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
     }
 }

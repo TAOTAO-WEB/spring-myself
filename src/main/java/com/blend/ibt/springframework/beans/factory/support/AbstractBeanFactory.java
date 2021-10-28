@@ -4,6 +4,7 @@ import com.blend.ibt.springframework.beans.BeansException;
 import com.blend.ibt.springframework.beans.factory.config.BeanDefinition;
 import com.blend.ibt.springframework.beans.factory.config.BeanPostProcessor;
 import com.blend.ibt.springframework.beans.factory.config.ConfigurableBeanFactory;
+import com.blend.ibt.springframework.utils.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,11 @@ import java.util.List;
  * @author tt
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+
+    /**
+     *
+     */
+    private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
     /**
      *  BeanPostProcessors to apply in createBean
@@ -58,4 +64,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return this.beanPostProcessors;
     }
+
+    public ClassLoader getBeanClassLoader(){
+        return this.beanClassLoader;
+    }
+
 }

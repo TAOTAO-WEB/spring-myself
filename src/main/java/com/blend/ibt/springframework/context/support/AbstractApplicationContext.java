@@ -25,6 +25,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         //2. 获取BeanFactory
         ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 
+        // 添加ApplicationContextAwareProcessor 让继承自ApplicationContextAware的Bean对象感知所属的ApplicationContext
+        beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+
         //3. 在Bean实例化之前 执行BeanFactoryProcessors
         invokeBeanFactoryPostProcessors(beanFactory);
 
@@ -80,6 +83,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         return getBeanFactory().getBean(name,requiredType);
     }
 
+    /**
+     * 注册钩子函数 jvm停止运行时自动调用 用于关闭
+     */
     @Override
     public void registerShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::close));

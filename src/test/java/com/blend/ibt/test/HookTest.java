@@ -1,6 +1,5 @@
 package com.blend.ibt.test;
 
-import cn.hutool.core.util.StrUtil;
 import com.blend.ibt.bean.UserService;
 import com.blend.ibt.springframework.context.support.ClassPathXmlApplicationContext;
 import org.junit.Test;
@@ -19,8 +18,13 @@ public class HookTest {
 
     }
 
+    /**
+     * Spring在关闭上下文的时候，可以使用钩子函数来关闭残留的资源
+     * 钩子函数会在主函数运行完后自动运行
+     */
     @Test
     public void test_hook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("close！")));
+        System.out.println("init");
     }
 }
