@@ -4,6 +4,7 @@ import com.blend.ibt.springframework.beans.BeansException;
 import com.blend.ibt.springframework.beans.factory.config.BeanDefinition;
 
 /**
+ * 定义对BeanDefinition的各种增删改操作
  * @author tt
  */
 public interface BeanDefinitionRegistry {

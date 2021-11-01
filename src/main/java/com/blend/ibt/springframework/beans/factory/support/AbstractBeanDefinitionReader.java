@@ -4,6 +4,7 @@ import com.blend.ibt.springframework.core.io.DefaultResourceLoader;
 import com.blend.ibt.springframework.core.io.ResourceLoader;
 
 /**
+ * 对BeanDefinitionReader类定义的功能进行实现
  * @author tt
  */
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader{

@@ -15,6 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
+ * 综合AbstractBeanFactory并对接口AutowireCapableBeanFactory进行实现
  * @author tt
  */
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
@@ -43,7 +44,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         registerDisposableBeanIfNecessary(beanName,bean,beanDefinition);
 
         if(beanDefinition.isSingleton()){
-            addSingleton(beanName,bean);
+            registerSingleton(beanName,bean);
         }
         return bean;
     }

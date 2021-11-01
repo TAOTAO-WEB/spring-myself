@@ -6,6 +6,7 @@ import com.blend.ibt.springframework.beans.BeansException;
 import java.util.Map;
 
 /**
+ * 根据各种条件获取bean的配置清单
  * @author tt
  */
 public interface ListableBeanFactory extends BeanFactory{

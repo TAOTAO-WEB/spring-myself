@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 在DefaultSingletonBeanRegistry基础上增加了对factoryBean的特数处理功能
  * @author tt
  */
 public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanRegistry{

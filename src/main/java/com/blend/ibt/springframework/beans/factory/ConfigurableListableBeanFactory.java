@@ -8,6 +8,7 @@ import com.blend.ibt.springframework.beans.factory.config.ConfigurableBeanFactor
 
 /**
  * 提供分析和修改Bean以及预先实例化的操作接口
+ * BeanFactory配置清单，指定忽略类型以及接口
  * @author tt
  */
 public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {

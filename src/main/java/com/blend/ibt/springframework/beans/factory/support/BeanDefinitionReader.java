@@ -5,6 +5,7 @@ import com.blend.ibt.springframework.core.io.Resource;
 import com.blend.ibt.springframework.core.io.ResourceLoader;
 
 /**
+ * 定义资源文件读取并转换为BeanDefinition的各个功能
  * @author tt
  */
 public interface BeanDefinitionReader {

@@ -4,6 +4,7 @@ package com.blend.ibt.springframework.beans.factory;
 import com.blend.ibt.springframework.beans.BeansException;
 
 /**
+ * 定义获取bean以及bean的各种属性
  * @author tt
  */
 public interface BeanFactory {

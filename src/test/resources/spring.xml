@@ -24,4 +24,11 @@
 
     <bean id="proxyUserDao" class="com.blend.ibt.bean.ProxyBeanFactory"/>
 
+
+    <bean class="com.blend.ibt.event.ContextRefreshedEventListener"/>
+
+    <bean class="com.blend.ibt.event.CustomEventListener"/>
+
+    <bean class="com.blend.ibt.event.ContextClosedEventListener"/>
+
 </beans>

@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * BeanDefinition 注册表接口
+ * 综合FactoryBeanRegistrySupport和ConfigurableBeanFactory功能
  * @author tt
  */
 public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
