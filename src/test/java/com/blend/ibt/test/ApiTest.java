@@ -31,10 +31,10 @@ public class ApiTest {
 
         //3.获取bean
         UserService userService = (UserService) beanFactory.getBean("userService");
-        userService.queryUser();
+        //userService.queryUser();
 
         UserService userService_sin = (UserService) beanFactory.getBean("userService2","123");
-        userService_sin.queryUser();
+        //userService_sin.queryUser();
         System.out.println(userService_sin.toString());
 
     }
