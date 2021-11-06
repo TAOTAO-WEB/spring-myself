@@ -6,10 +6,7 @@ import com.blend.ibt.springframework.beans.BeansException;
 import com.blend.ibt.springframework.beans.PropertyValue;
 import com.blend.ibt.springframework.beans.PropertyValues;
 import com.blend.ibt.springframework.beans.factory.*;
-import com.blend.ibt.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import com.blend.ibt.springframework.beans.factory.config.BeanDefinition;
-import com.blend.ibt.springframework.beans.factory.config.BeanPostProcessor;
-import com.blend.ibt.springframework.beans.factory.config.BeanReference;
+import com.blend.ibt.springframework.beans.factory.config.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -31,7 +28,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
         Object bean = null;
         try{
+            //判断是否返回代理Bean对象
+            bean = resolveBeforeInstantiation(beanName, beanDefinition);
+            if(null != bean) {
+                return bean;
+            }
+            //实例化Bean
             bean = createBeanInstant(beanDefinition,beanName,args);
+            //在设置属性之前，允许BeanPostProcessor修改属性值
+            applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName,bean,beanDefinition);
             //给Bean填充属性
             applyPropertyValues(beanName,bean,beanDefinition);
             //执行Bean的初始化方法和BeanPostProcessor的前置和后置处理方法
@@ -43,8 +48,37 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         // 注册实现了DisposableBean接口的Bean对象
         registerDisposableBeanIfNecessary(beanName,bean,beanDefinition);
 
+        //判断 SCOPE_SINGLETON,SCOPE_PROTOTYPE
         if(beanDefinition.isSingleton()){
             registerSingleton(beanName,bean);
+        }
+        return bean;
+    }
+
+    /**
+     * 在设置Bean属性之前，允许BeanPostProcessor修改属性值
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     */
+    protected void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName,Object bean,BeanDefinition beanDefinition){
+        for(BeanPostProcessor beanPostProcessor:getBeanPostProcessors()){
+            if(beanPostProcessor instanceof InstantiationAwareBeanPostProcessor){
+                PropertyValues pvs = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(beanDefinition.getPropertyValues(),bean,beanName);
+                if(null != pvs){
+                    for(PropertyValue propertyValue:pvs.getPropertyValues()){
+                        beanDefinition.getPropertyValues().addPropertyValue(propertyValue);
+                    }
+                }
+            }
+        }
+
+    }
+
+    protected Object resolveBeforeInstantiation(String beanName,BeanDefinition beanDefinition){
+        Object bean = applyBeanPostProcessorsBeforeInitialization(beanDefinition.getBeanClass(),beanName);
+        if(null != bean){
+            bean = applyBeanPostProcessorsAfterInitialization(bean,beanName);
         }
         return bean;
     }
@@ -89,6 +123,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             throw new BeansException("Error setting property values:"+beanName);
         }
     }
+
+
 
     private Object initializeBean(String beanName,Object bean,BeanDefinition beanDefinition){
 
@@ -147,6 +183,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())){
             registerDisposableBean(beanName,new DisposableBeanAdapter(bean,beanName,beanDefinition));
         }
+    }
+
+    protected Object applyBeanPostProcessorsBeforeInitialization(Class<?> beanClass,String beanName){
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
+                if (null != result) return result;
+            }
+        }
+        return null;
     }
 
 

@@ -4,6 +4,7 @@ import com.blend.ibt.springframework.aop.*;
 import com.blend.ibt.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import com.blend.ibt.springframework.aop.framework.ProxyFactory;
 import com.blend.ibt.springframework.beans.BeansException;
+import com.blend.ibt.springframework.beans.PropertyValues;
 import com.blend.ibt.springframework.beans.factory.BeanFactory;
 import com.blend.ibt.springframework.beans.factory.BeanFactoryAware;
 import com.blend.ibt.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
@@ -69,5 +70,10 @@ public class DefaultAdvisorAutoProxyCreator implements BeanFactoryAware, Instant
         }
 
         return null;
+    }
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        return pvs;
     }
 }

@@ -4,7 +4,7 @@ import com.blend.ibt.springframework.stereotype.Component;
 
 import java.util.Random;
 
-@Component("userService")
+//@Component("userService")
 public class UserService4 implements IUserService{
 
     private String token;

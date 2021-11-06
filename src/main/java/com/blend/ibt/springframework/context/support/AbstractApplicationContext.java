@@ -122,6 +122,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         return getBeanFactory().getBean(name,requiredType);
     }
 
+    @Override
+    public <T> T getBean(Class<T> requiredType) throws BeansException {
+        return getBeanFactory().getBean(requiredType);
+    }
+
     /**
      * 注册钩子函数 jvm停止运行时自动调用 用于关闭
      */

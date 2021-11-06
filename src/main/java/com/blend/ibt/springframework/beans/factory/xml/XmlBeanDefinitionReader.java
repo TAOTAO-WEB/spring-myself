@@ -101,6 +101,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         }
     }
 
+    private void scanPackage(String scanPath){
+        String[] basePackages = StrUtil.splitToArray(scanPath,',');
+        ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(getRegistry());
+        scanner.doScan(basePackages);
+    }
+
     @Override
     public void loadBeanDefinitions(Resource resource) throws BeansException {
         try{
@@ -134,10 +140,5 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         }
     }
 
-    private void scanPackage(String scanPath){
-        String[] basePackages = StrUtil.splitToArray(scanPath,',');
-        ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(getRegistry());
-        scanner.doScan(basePackages);
-    }
 
 }

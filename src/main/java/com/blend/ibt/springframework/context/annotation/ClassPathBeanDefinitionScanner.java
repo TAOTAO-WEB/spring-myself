@@ -1,6 +1,7 @@
 package com.blend.ibt.springframework.context.annotation;
 
 import cn.hutool.core.util.StrUtil;
+import com.blend.ibt.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import com.blend.ibt.springframework.beans.factory.config.BeanDefinition;
 import com.blend.ibt.springframework.beans.factory.support.BeanDefinitionRegistry;
 import com.blend.ibt.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Set;
  * @author tt
  */
 public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateComponentProvider{
+
     private BeanDefinitionRegistry registry;
 
     public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry){
@@ -31,6 +33,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
                 registry.registerBeanDefinition(determineBeanName(beanDefinition),beanDefinition);
             }
         }
+        // 注册处理注解的 BeanPostProcessor（@Autowired、@Value）
+        registry.registerBeanDefinition("AutowiredAnnotationBeanPostProcessor",
+                new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     private String resolveBeanScope(BeanDefinition beanDefinition){
