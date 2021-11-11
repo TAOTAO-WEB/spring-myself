@@ -1,5 +1,7 @@
 package com.blend.ibt.springframework.aop;
 
+import com.blend.ibt.springframework.utils.ClassUtils;
+
 /**
  * 被代理的目标对象
  * @author tt
@@ -13,7 +15,10 @@ public class TargetSource {
     }
 
     public Class<?>[] getTargetClass(){
-        return this.target.getClass().getInterfaces();
+        Class<?> clazz = this.target.getClass();
+        clazz = ClassUtils.isCglibProxyClass(clazz)?clazz.getSuperclass():clazz;
+
+        return clazz.getInterfaces();
     }
 
     public Object getTarget(){
