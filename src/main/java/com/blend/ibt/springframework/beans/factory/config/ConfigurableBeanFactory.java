@@ -1,6 +1,7 @@
 package com.blend.ibt.springframework.beans.factory.config;
 
 import com.blend.ibt.springframework.beans.factory.HierarchicalBeanFactory;
+import com.blend.ibt.springframework.core.convert.ConversionService;
 import com.blend.ibt.springframework.utils.StringValueResolver;
 
 /**
@@ -36,6 +37,17 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory,Singlet
      * @return
      */
     String resolveEmbeddedValue(String value);
+
+    /**
+     *
+     * @param conversionService
+     */
+    void setConversionService(ConversionService conversionService);
+
+    /**
+     * @return
+     */
+    ConversionService getConversionService();
 
 
 }

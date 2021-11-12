@@ -11,6 +11,7 @@ import com.blend.ibt.springframework.context.event.ApplicationEventMulticaster;
 import com.blend.ibt.springframework.context.event.ContextClosedEvent;
 import com.blend.ibt.springframework.context.event.ContextRefreshedEvent;
 import com.blend.ibt.springframework.context.event.SimpleApplicationEventMulticaster;
+import com.blend.ibt.springframework.core.convert.ConversionService;
 import com.blend.ibt.springframework.core.io.DefaultResourceLoader;
 
 import java.util.Collection;
@@ -51,7 +52,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         registerListeners();
 
         //8. 提前实例化单例bean对象
-        beanFactory.preInstantiateSingletons();
+        finishBeanFactoryInitialization(beanFactory);
 
         //9. 发布容器刷新完成事件
         finishRefresh();
@@ -60,6 +61,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     protected abstract void refreshBeanFactory() throws BeansException;
 
     protected abstract ConfigurableListableBeanFactory getBeanFactory();
+
+    protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory){
+        //设置类型转换器
+        if(beanFactory.containsBean("conversionService")){
+            Object conversionService = beanFactory.getBean("conversionService");
+            if(conversionService instanceof ConversionService){
+                beanFactory.setConversionService((ConversionService) conversionService);
+            }
+        }
+
+        //提前实例化单例bean对象
+        beanFactory.preInstantiateSingletons();
+
+    }
 
     private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory){
         Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessorMap = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
@@ -142,5 +157,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
         //执行销毁单例bean的销毁方法
         getBeanFactory().destroySingletons();
+    }
+
+    @Override
+    public boolean containsBean(String name) {
+        return getBeanFactory().containsBean(name);
     }
 }

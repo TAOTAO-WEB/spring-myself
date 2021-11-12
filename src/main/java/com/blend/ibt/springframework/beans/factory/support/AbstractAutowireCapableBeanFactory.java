@@ -2,11 +2,13 @@ package com.blend.ibt.springframework.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.TypeUtil;
 import com.blend.ibt.springframework.beans.BeansException;
 import com.blend.ibt.springframework.beans.PropertyValue;
 import com.blend.ibt.springframework.beans.PropertyValues;
 import com.blend.ibt.springframework.beans.factory.*;
 import com.blend.ibt.springframework.beans.factory.config.*;
+import com.blend.ibt.springframework.core.convert.ConversionService;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -170,6 +172,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                     //A 依赖 B，获取B的实例化
                     BeanReference beanReference = (BeanReference)value;
                     value = getBean(beanReference.getBeanName());
+                }
+                //类型转换
+                else {
+                    Class<?> sourceType = value.getClass();
+                    Class<?> targetType = (Class<?>) TypeUtil.getFieldType(bean.getClass(),name);
+
+                    ConversionService conversionService = getConversionService();
+                    if(conversionService != null){
+                        if(conversionService.canConvert(sourceType,targetType)){
+                            value = conversionService.convert(value,targetType);
+                        }
+                    }
                 }
                 //属性填充
                 BeanUtil.setFieldValue(bean,name,value);

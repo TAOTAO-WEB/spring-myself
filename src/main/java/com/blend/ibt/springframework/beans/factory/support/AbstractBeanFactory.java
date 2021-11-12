@@ -5,6 +5,7 @@ import com.blend.ibt.springframework.beans.factory.FactoryBean;
 import com.blend.ibt.springframework.beans.factory.config.BeanDefinition;
 import com.blend.ibt.springframework.beans.factory.config.BeanPostProcessor;
 import com.blend.ibt.springframework.beans.factory.config.ConfigurableBeanFactory;
+import com.blend.ibt.springframework.core.convert.ConversionService;
 import com.blend.ibt.springframework.utils.ClassUtils;
 import com.blend.ibt.springframework.utils.StringValueResolver;
 
@@ -32,6 +33,15 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
      * String resolvers to apply e.g. to annotation attribute values
      */
     private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
+
+    private ConversionService conversionService;
+
+    @Override
+    public boolean containsBean(String name) {
+        return containsBeanDefinition(name);
+    }
+
+    protected abstract boolean containsBeanDefinition(String beanName);
 
     @Override
     public Object getBean(String name) throws BeansException {
@@ -106,5 +116,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
         return result;
     }
 
+    @Override
+    public void setConversionService(ConversionService conversionService) {
+        this.conversionService = conversionService;
+    }
 
+    @Override
+    public ConversionService getConversionService() {
+        return conversionService;
+    }
 }
